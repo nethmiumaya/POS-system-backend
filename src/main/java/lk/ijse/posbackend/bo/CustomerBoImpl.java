@@ -11,4 +11,22 @@ public class CustomerBoImpl implements CustomerBO{
         var customerDaoImp = new CustomerDaoImpl();
         return customerDaoImp.saveCustomer(customer, connection);
     }
+
+    @Override
+    public CustomerDTO getCustomer(String id, Connection connection) throws Exception {
+        var customerDaoImp = new CustomerDaoImpl();
+        return customerDaoImp.getCustomer(id, connection);
+    }
+
+    @Override
+    public boolean updateCustomer(String id, CustomerDTO customer, Connection connection) throws Exception {
+      var customerDaoImp = new CustomerDaoImpl();
+      return customerDaoImp.updateCustomer(id, customer, connection);
+    }
+
+    @Override
+    public boolean deleteCustomer(String id, Connection connection) throws Exception {
+        var customerDaoImp = new CustomerDaoImpl();
+        return customerDaoImp.deleteCustomer(id, connection);
+    }
 }

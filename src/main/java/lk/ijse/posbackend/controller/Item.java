@@ -8,7 +8,9 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lk.ijse.posbackend.bo.CustomerBoImpl;
+import lk.ijse.posbackend.bo.ItemBaoImp;
 import lk.ijse.posbackend.dto.CustomerDTO;
+import lk.ijse.posbackend.dto.ItemDTO;
 import lk.ijse.posbackend.util.Util;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,9 +22,9 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-@WebServlet(urlPatterns = "/customer",loadOnStartup = 2)
-public class Customer extends HttpServlet {
-    static Logger logger = LoggerFactory.getLogger(Customer.class);
+@WebServlet(urlPatterns = "/item",loadOnStartup = 2)
+public class Item extends HttpServlet {
+    static Logger logger = LoggerFactory.getLogger(Item.class);
     Connection connection;
 
     @Override
@@ -40,19 +42,18 @@ public class Customer extends HttpServlet {
         }
     }
 
-
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        if(req.getContentType() == null || !req.getContentType().toLowerCase().startsWith("application/json")){
+        if (req.getContentType()==null || !req.getContentType().contains("application/json")) {
             resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
         }
         try (var writer = resp.getWriter()){
             Jsonb jsonb = JsonbBuilder.create();
-            var customerBoImp = new CustomerBoImpl();
-            CustomerDTO customerDTO = jsonb.fromJson(req.getReader(), CustomerDTO.class);
-            customerDTO.setCustId(Util.idGenerate());
+            var itemBoImp = new ItemBaoImp();
+            ItemDTO itemDTO = jsonb.fromJson(req.getReader(), ItemDTO.class);
+            itemDTO.setItemId(Util.idGenerate());
 
-            writer.write(customerBoImp.saveCustomer(customerDTO,connection));
+            writer.write(itemBoImp.saveItem(itemDTO,connection));
             resp.setStatus(HttpServletResponse.SC_CREATED);
         } catch (Exception e) {
             resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
@@ -62,31 +63,29 @@ public class Customer extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
         try (var writer = resp.getWriter()){
-            var customerBoImp = new CustomerBoImpl();
+            var itemBoImp = new ItemBaoImp();
             Jsonb jsonb = JsonbBuilder.create();
-            var custId = req.getParameter("custId");
+            var itemId = req.getParameter("itemId");
             resp.setContentType("application/json");
-            jsonb.toJson(customerBoImp.getCustomer(custId,connection),writer);
-
-        } catch (Exception e){
+            jsonb.toJson(itemBoImp.getItem(itemId,connection),writer);
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        try (var writer = resp.getWriter()) {
-            var customerBoImp = new CustomerBoImpl();
-            var custId = req.getParameter("custId");
+        try(var writer = resp.getWriter()) {
+            var itemBoImp = new ItemBaoImp();
+            var itemId = req.getParameter("itemId");
             Jsonb jsonb = JsonbBuilder.create();
-            CustomerDTO customerDTO = jsonb.fromJson(req.getReader(), CustomerDTO.class);
-            if (customerBoImp.updateCustomer(custId, customerDTO, connection)) {
+            ItemDTO itemDTO = jsonb.fromJson(req.getReader(), ItemDTO.class);
+            if (itemBoImp.updateItem(itemId,itemDTO,connection)){
                 resp.setStatus(HttpServletResponse.SC_NO_CONTENT);
-
-            } else {
-                writer.write("Update failed");
+            }
+            else {
+                writer.write("update fail");
                 resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             }
         } catch (Exception e) {
@@ -97,9 +96,9 @@ public class Customer extends HttpServlet {
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try(var writer = resp.getWriter()) {
-            var custId = req.getParameter("custId");
-            var customerBoImp = new CustomerBoImpl();
-            if (customerBoImp.deleteCustomer(custId,connection)){
+            var itemId = req.getParameter("itemId");
+            var itemBoImp = new ItemBaoImp();
+            if (itemBoImp.deleteItem(itemId,connection)){
                 resp.setStatus((HttpServletResponse.SC_NO_CONTENT));
             }else {
                 writer.write("Delete failed");
@@ -108,5 +107,4 @@ public class Customer extends HttpServlet {
             e.printStackTrace();
         }
     }
-
 }
