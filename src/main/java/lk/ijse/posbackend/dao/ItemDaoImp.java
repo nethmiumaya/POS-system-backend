@@ -1,12 +1,16 @@
 package lk.ijse.posbackend.dao;
 
+import lk.ijse.posbackend.dto.CustomerDTO;
 import lk.ijse.posbackend.dto.ItemDTO;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ItemDaoImp implements ItemDao {
 
+    public static String GET_ALL_ITEMS = "SELECT * FROM item";
     public static String UPDATE_ITEM ="UPDATE item SET itemName=?,itemQty=?,itemPrice=? WHERE itemId=?";
     public static String SAVE_ITEM= "INSERT INTO item (itemId,itemName,itemQty,itemPrice) VALUES(?,?,?,?)";
     public static String GET_ITEM = "SELECT * FROM item WHERE itemId=?";
@@ -69,5 +73,27 @@ public class ItemDaoImp implements ItemDao {
         var ps = connection.prepareStatement(DELETE_ITEM);
         ps.setString(1,id);
         return ps.executeUpdate() !=0;
+    }
+
+    @Override
+    public List<ItemDTO> getAllItem(Connection connection) throws SQLException {
+        try {
+            List<ItemDTO> itemDTOList = new ArrayList<>();
+            var ps = connection.prepareStatement(GET_ALL_ITEMS);
+            var rst = ps.executeQuery();
+            while (rst.next()){
+              ItemDTO itemDTO = new ItemDTO();
+
+              itemDTO.setItemId(rst.getString("itemId"));
+              itemDTO.setItemName(rst.getString("itemName"));
+              itemDTO.setItemQty(rst.getString("itemQty"));
+              itemDTO.setItemPrice(rst.getString("itemPrice"));
+              itemDTOList.add(itemDTO);
+            }
+            System.out.println("itemDtoList: " + itemDTOList);
+            return itemDTOList;
+        }catch (SQLException e){
+            throw new SQLException(e.getMessage());
+        }
     }
 }

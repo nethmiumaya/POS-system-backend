@@ -4,6 +4,7 @@ import lk.ijse.posbackend.dao.ItemDaoImp;
 import lk.ijse.posbackend.dto.ItemDTO;
 
 import java.sql.Connection;
+import java.util.List;
 
 public class ItemBaoImp implements ItemBO{
     @Override
@@ -28,5 +29,11 @@ public class ItemBaoImp implements ItemBO{
     public boolean deleteItem(String id, Connection connection) throws Exception {
       var itemDaoImp = new ItemDaoImp();
       return itemDaoImp.deleteItem(id, connection);
+    }
+
+    @Override
+    public List<ItemDTO> getAllItems(Connection connection) throws Exception {
+        var itemDaoImp = new ItemDaoImp();
+        return itemDaoImp.getAllItem(connection);
     }
 }

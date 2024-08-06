@@ -4,9 +4,12 @@ import lk.ijse.posbackend.dto.CustomerDTO;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public final class CustomerDaoImpl implements CustomerDao {
 
+    public static String GET_ALL_CUSTOMER = "SELECT * FROM customer";
     public static String UPDATE_CUSTOMER = "UPDATE customer SET custName=?,custAddress=?,custSalary=? WHERE custId=?";
     public static String GET_CUSTOMER = "SELECT * FROM customer WHERE custId=?";
     public static String SAVE_CUSTOMER =  "INSERT INTO customer (custId,custName,custAddress,custSalary) VALUES(?,?,?,?)";
@@ -70,5 +73,27 @@ public final class CustomerDaoImpl implements CustomerDao {
          var ps = connection.prepareStatement(DELETE_CUSTOMER);
          ps.setString(1,id);
          return ps.executeUpdate() !=0;
+    }
+
+    @Override
+    public List<CustomerDTO> getAllCustomers(Connection connection) throws SQLException {
+        try {
+            List<CustomerDTO> customerDTOList = new ArrayList<>();
+            var ps = connection.prepareStatement(GET_ALL_CUSTOMER);
+            var rst = ps.executeQuery();
+            while (rst.next()){
+                CustomerDTO customerDTO = new CustomerDTO();
+
+                customerDTO.setCustId(rst.getString("custId"));
+                customerDTO.setCustName(rst.getString("custName"));
+                customerDTO.setCustAddress(rst.getString("custAddress"));
+                customerDTO.setCustSalary(rst.getString("custSalary"));
+                customerDTOList.add(customerDTO);
+            }
+            System.out.println("customerDTOList: " + customerDTOList);
+            return customerDTOList;
+        }catch (SQLException e){
+            throw new SQLException(e.getMessage());
+        }
     }
 }

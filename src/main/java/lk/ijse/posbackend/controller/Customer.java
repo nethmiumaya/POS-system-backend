@@ -50,7 +50,7 @@ public class Customer extends HttpServlet {
             Jsonb jsonb = JsonbBuilder.create();
             var customerBoImp = new CustomerBoImpl();
             CustomerDTO customerDTO = jsonb.fromJson(req.getReader(), CustomerDTO.class);
-            customerDTO.setCustId(Util.idGenerate());
+           // customerDTO.setCustId(Util.idGenerate());
 
             writer.write(customerBoImp.saveCustomer(customerDTO,connection));
             resp.setStatus(HttpServletResponse.SC_CREATED);
@@ -62,15 +62,28 @@ public class Customer extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
+        var custId = req.getParameter("custId");
         try (var writer = resp.getWriter()){
             var customerBoImp = new CustomerBoImpl();
+
+
             Jsonb jsonb = JsonbBuilder.create();
-            var custId = req.getParameter("custId");
             resp.setContentType("application/json");
-            jsonb.toJson(customerBoImp.getCustomer(custId,connection),writer);
+
+
+            if(custId != null){
+                jsonb.toJson(customerBoImp.getCustomer(custId,connection),writer);
+                resp.setStatus(HttpServletResponse.SC_OK);
+                logger.info("Customer Found Successfully");
+            }else {
+               jsonb.toJson(customerBoImp.getAllCustomers(connection),writer);
+               resp.setStatus(HttpServletResponse.SC_OK);
+               logger.info("Customer Found Successfully");
+            }
 
         } catch (Exception e){
+            resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            logger.error("Error occurred while getting customer",e);
             e.printStackTrace();
         }
     }

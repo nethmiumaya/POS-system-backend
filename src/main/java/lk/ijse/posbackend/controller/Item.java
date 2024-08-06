@@ -63,13 +63,25 @@ public class Item extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        var id = req.getParameter("itemId");
         try (var writer = resp.getWriter()){
             var itemBoImp = new ItemBaoImp();
+
             Jsonb jsonb = JsonbBuilder.create();
-            var itemId = req.getParameter("itemId");
             resp.setContentType("application/json");
-            jsonb.toJson(itemBoImp.getItem(itemId,connection),writer);
+
+          if (id != null){
+              jsonb.toJson(itemBoImp.getItem(id,connection),writer);
+              resp.setStatus(HttpServletResponse.SC_OK);
+              logger.info("Item Retrieve successfully");
+          }else {
+              jsonb.toJson(itemBoImp.getAllItems(connection),writer);
+              resp.setStatus(HttpServletResponse.SC_OK);
+              logger.info("All Item Retrieve successfully");
+          }
         } catch (Exception e) {
+            resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            logger.error("Error occured while getting item");
             e.printStackTrace();
         }
     }
