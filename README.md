@@ -81,7 +81,9 @@ Orders Endpoints:
 
 ## Project Repository
 
- [POS-system-backend]([https://github.com/nethmiumaya/POS-system-backend.git)).
+You can find the frontend development project on GitHub [Frontend POS System](https://github.com/nethmiumaya/POS_system-FrontEnd-.git).
+
+
 
 
 
