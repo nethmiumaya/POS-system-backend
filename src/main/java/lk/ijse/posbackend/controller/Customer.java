@@ -52,7 +52,11 @@ public class Customer extends HttpServlet {
             CustomerDTO customerDTO = jsonb.fromJson(req.getReader(), CustomerDTO.class);
            // customerDTO.setCustId(Util.idGenerate());
 
-            writer.write(customerBoImp.saveCustomer(customerDTO,connection));
+            System.out.println(customerDTO.getCustName());
+
+            String output = customerBoImp.saveCustomer(customerDTO,connection);
+            System.out.println("output "+output);
+            writer.write(output);
             resp.setStatus(HttpServletResponse.SC_CREATED);
         } catch (Exception e) {
             resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
@@ -92,10 +96,10 @@ public class Customer extends HttpServlet {
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try (var writer = resp.getWriter()) {
             var customerBoImp = new CustomerBoImpl();
-            var custId = req.getParameter("custId");
+
             Jsonb jsonb = JsonbBuilder.create();
             CustomerDTO customerDTO = jsonb.fromJson(req.getReader(), CustomerDTO.class);
-            if (customerBoImp.updateCustomer(custId, customerDTO, connection)) {
+            if (customerBoImp.updateCustomer(customerDTO, connection)) {
                 resp.setStatus(HttpServletResponse.SC_NO_CONTENT);
 
             } else {

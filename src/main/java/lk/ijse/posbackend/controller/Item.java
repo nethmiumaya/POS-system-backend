@@ -51,7 +51,7 @@ public class Item extends HttpServlet {
             Jsonb jsonb = JsonbBuilder.create();
             var itemBoImp = new ItemBaoImp();
             ItemDTO itemDTO = jsonb.fromJson(req.getReader(), ItemDTO.class);
-            itemDTO.setItemId(Util.idGenerate());
+           // itemDTO.setItemId(Util.idGenerate());
 
             writer.write(itemBoImp.saveItem(itemDTO,connection));
             resp.setStatus(HttpServletResponse.SC_CREATED);
@@ -90,10 +90,10 @@ public class Item extends HttpServlet {
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try(var writer = resp.getWriter()) {
             var itemBoImp = new ItemBaoImp();
-            var itemId = req.getParameter("itemId");
+
             Jsonb jsonb = JsonbBuilder.create();
             ItemDTO itemDTO = jsonb.fromJson(req.getReader(), ItemDTO.class);
-            if (itemBoImp.updateItem(itemId,itemDTO,connection)){
+            if (itemBoImp.updateItem(itemDTO,connection)){
                 resp.setStatus(HttpServletResponse.SC_NO_CONTENT);
             }
             else {

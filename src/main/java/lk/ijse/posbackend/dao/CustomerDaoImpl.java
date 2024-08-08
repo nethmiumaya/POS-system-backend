@@ -17,6 +17,8 @@ public final class CustomerDaoImpl implements CustomerDao {
 
     @Override
     public String saveCustomer(CustomerDTO customer, Connection connection) throws SQLException {
+
+        System.out.println("customer Dao  "+customer.getCustAddress());
         try {
             var ps = connection.prepareStatement(SAVE_CUSTOMER);
             ps.setString(1,customer.getCustId());
@@ -55,13 +57,13 @@ public final class CustomerDaoImpl implements CustomerDao {
     }
 
     @Override
-    public boolean updateCustomer(String id, CustomerDTO customerDTO, Connection connection) throws SQLException {
+    public boolean updateCustomer(CustomerDTO customerDTO, Connection connection) throws SQLException {
        try {
            var ps = connection.prepareStatement(UPDATE_CUSTOMER);
            ps.setString(1,customerDTO.getCustName());
            ps.setString(2,customerDTO.getCustAddress());
            ps.setString(3,customerDTO.getCustSalary());
-           ps.setString(4,id);
+           ps.setString(4,customerDTO.getCustId());
            return ps.executeUpdate() !=0;
        }catch (SQLException e){
            throw new SQLException(e.getMessage());

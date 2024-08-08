@@ -9,7 +9,7 @@ import java.util.List;
 public interface CustomerBO {
     String saveCustomer(CustomerDTO customer, Connection connection) throws Exception;
     CustomerDTO getCustomer(String id,Connection connection) throws Exception;
-    boolean updateCustomer(String id,CustomerDTO customer, Connection connection) throws Exception;
+    boolean updateCustomer(CustomerDTO customer, Connection connection) throws Exception;
     boolean deleteCustomer(String id,Connection connection) throws Exception;
     List<CustomerDTO> getAllCustomers(Connection connection) throws Exception;
 }

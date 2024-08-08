@@ -20,9 +20,9 @@ public class ItemBaoImp implements ItemBO{
     }
 
     @Override
-    public boolean updateItem(String id, ItemDTO customer, Connection connection) throws Exception {
+    public boolean updateItem( ItemDTO customer, Connection connection) throws Exception {
         var itemDaoImp = new ItemDaoImp();
-        return itemDaoImp.updateItem(id, customer, connection);
+        return itemDaoImp.updateItem(customer, connection);
     }
 
     @Override

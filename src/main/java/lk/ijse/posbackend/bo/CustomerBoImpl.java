@@ -10,6 +10,7 @@ public class CustomerBoImpl implements CustomerBO{
     @Override
     public String saveCustomer(CustomerDTO customer, Connection connection) throws Exception {
         var customerDaoImp = new CustomerDaoImpl();
+        System.out.println("customer "+customer.getCustAddress());
         return customerDaoImp.saveCustomer(customer, connection);
     }
 
@@ -20,9 +21,9 @@ public class CustomerBoImpl implements CustomerBO{
     }
 
     @Override
-    public boolean updateCustomer(String id, CustomerDTO customer, Connection connection) throws Exception {
+    public boolean updateCustomer(CustomerDTO customer, Connection connection) throws Exception {
       var customerDaoImp = new CustomerDaoImpl();
-      return customerDaoImp.updateCustomer(id, customer, connection);
+      return customerDaoImp.updateCustomer(customer, connection);
     }
 
     @Override

@@ -55,13 +55,13 @@ public class ItemDaoImp implements ItemDao {
     }
 
     @Override
-    public boolean updateItem(String id, ItemDTO item, Connection connection) throws Exception {
+    public boolean updateItem( ItemDTO item, Connection connection) throws Exception {
        try {
            var ps = connection.prepareStatement(UPDATE_ITEM);
            ps.setString(1,item.getItemName());
            ps.setString(2,item.getItemQty());
            ps.setString(3,item.getItemPrice());
-           ps.setString(4,id);
+           ps.setString(4,item.getItemId());
            return ps.executeUpdate() !=0;
        }catch (SQLException e){
            throw new SQLException(e.getMessage());
