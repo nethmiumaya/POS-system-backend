@@ -1,11 +1,9 @@
 package lk.ijse.posbackend.bo;
-
 import lk.ijse.posbackend.dao.OrderDaoImp;
 import lk.ijse.posbackend.dao.OrderDetailDaoIMPL;
 import lk.ijse.posbackend.dto.ItemDTO;
 import lk.ijse.posbackend.dto.OrderDTO;
 import lk.ijse.posbackend.dto.OrderDetailDTO;
-
 import java.sql.Connection;
 import java.util.List;
 
@@ -50,6 +48,5 @@ public class OrderBOIMPL implements OrderBO{
     public List<OrderDTO> getAllOrders(Connection connection) throws Exception {
         var orderDaoImpl = new OrderDaoImp();
         return  orderDaoImpl.getAllOrders(connection);
-
     }
 }

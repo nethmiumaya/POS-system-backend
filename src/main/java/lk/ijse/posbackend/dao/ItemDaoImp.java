@@ -1,8 +1,5 @@
 package lk.ijse.posbackend.dao;
-
-import lk.ijse.posbackend.dto.CustomerDTO;
 import lk.ijse.posbackend.dto.ItemDTO;
-
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -27,10 +24,10 @@ public class ItemDaoImp implements ItemDao {
 
             if (ps.executeUpdate() == 0) {
                 return "Item added successfully";
-            }else {
+            } else {
                 return "  ";
             }
-        }catch (SQLException e){
+        } catch (SQLException e){
             throw new SQLException(e.getMessage());
         }
     }
@@ -49,7 +46,7 @@ public class ItemDaoImp implements ItemDao {
                itemDTO.setItemPrice(rst.getString("itemPrice"));
            }
            return itemDTO;
-       }catch (Exception e){
+       } catch (Exception e){
            throw new SQLException(e.getMessage());
        }
     }
@@ -63,7 +60,7 @@ public class ItemDaoImp implements ItemDao {
            ps.setString(3,item.getItemPrice());
            ps.setString(4,item.getItemId());
            return ps.executeUpdate() !=0;
-       }catch (SQLException e){
+       } catch (SQLException e){
            throw new SQLException(e.getMessage());
        }
     }
@@ -90,7 +87,6 @@ public class ItemDaoImp implements ItemDao {
               itemDTO.setItemPrice(rst.getString("itemPrice"));
               itemDTOList.add(itemDTO);
             }
-            System.out.println("itemDtoList: " + itemDTOList);
             return itemDTOList;
         }catch (SQLException e){
             throw new SQLException(e.getMessage());

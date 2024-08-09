@@ -9,7 +9,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lk.ijse.posbackend.bo.CustomerBoImpl;
 import lk.ijse.posbackend.dto.CustomerDTO;
-import lk.ijse.posbackend.util.Util;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,9 +32,8 @@ public class Customer extends HttpServlet {
             DataSource pool = (DataSource) ctx.lookup("java:comp/env/jdbc/cusReg");
             this.connection = pool.getConnection();
             logger.debug("Connection initialized",this.connection);
-
         }catch (SQLException | NamingException e){
-            logger.error("DB connection not init" );
+            logger.error("DB connection initialization failed" );
             e.printStackTrace();
         }
     }
@@ -50,16 +48,13 @@ public class Customer extends HttpServlet {
             Jsonb jsonb = JsonbBuilder.create();
             var customerBoImp = new CustomerBoImpl();
             CustomerDTO customerDTO = jsonb.fromJson(req.getReader(), CustomerDTO.class);
-           // customerDTO.setCustId(Util.idGenerate());
-
-            System.out.println(customerDTO.getCustName());
-
             String output = customerBoImp.saveCustomer(customerDTO,connection);
-            System.out.println("output "+output);
             writer.write(output);
             resp.setStatus(HttpServletResponse.SC_CREATED);
+            logger.info("customer saved successfully");
         } catch (Exception e) {
             resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            logger.error("Error saving customer",e);
             e.printStackTrace();
         }
     }
@@ -69,25 +64,20 @@ public class Customer extends HttpServlet {
         var custId = req.getParameter("custId");
         try (var writer = resp.getWriter()){
             var customerBoImp = new CustomerBoImpl();
-
-
             Jsonb jsonb = JsonbBuilder.create();
             resp.setContentType("application/json");
-
-
             if(custId != null){
                 jsonb.toJson(customerBoImp.getCustomer(custId,connection),writer);
                 resp.setStatus(HttpServletResponse.SC_OK);
-                logger.info("Customer Found Successfully");
+                logger.info("Customer Retrieved Successfully");
             }else {
                jsonb.toJson(customerBoImp.getAllCustomers(connection),writer);
                resp.setStatus(HttpServletResponse.SC_OK);
-               logger.info("Customer Found Successfully");
+               logger.info("All Customers Retrieved Successfully");
             }
-
         } catch (Exception e){
             resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            logger.error("Error occurred while getting customer",e);
+            logger.error("Error occurred while retrieving customer",e);
             e.printStackTrace();
         }
     }
@@ -96,17 +86,18 @@ public class Customer extends HttpServlet {
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try (var writer = resp.getWriter()) {
             var customerBoImp = new CustomerBoImpl();
-
             Jsonb jsonb = JsonbBuilder.create();
             CustomerDTO customerDTO = jsonb.fromJson(req.getReader(), CustomerDTO.class);
             if (customerBoImp.updateCustomer(customerDTO, connection)) {
                 resp.setStatus(HttpServletResponse.SC_NO_CONTENT);
-
+                logger.info("Customer Updated Successfully");
             } else {
                 writer.write("Update failed");
                 resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                logger.info("Customer Updated Failed");
             }
         } catch (Exception e) {
+            logger.error("Error occurred while updating customer",e);
             e.printStackTrace();
         }
     }
@@ -118,12 +109,14 @@ public class Customer extends HttpServlet {
             var customerBoImp = new CustomerBoImpl();
             if (customerBoImp.deleteCustomer(custId,connection)){
                 resp.setStatus((HttpServletResponse.SC_NO_CONTENT));
-            }else {
+                logger.info("Customer Deleted Successfully");
+            } else {
                 writer.write("Delete failed");
+                logger.info("Customer Deleted Failed");
             }
         } catch (Exception e) {
+            logger.error("Error occurred while deleting customer",e);
             e.printStackTrace();
         }
     }
-
 }

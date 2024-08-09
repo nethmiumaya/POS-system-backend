@@ -1,8 +1,6 @@
 package lk.ijse.posbackend.dao;
 
-import lk.ijse.posbackend.dto.CustomerDTO;
 import lk.ijse.posbackend.dto.OrderDTO;
-
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -15,7 +13,6 @@ public class OrderDaoImp implements OrderDao{
 
     @Override
     public boolean saveOrder(OrderDTO orderDTO, Connection connection) throws Exception {
-
         try {
             var ps = connection.prepareStatement(SAVE_ORDER);
             ps.setString(1, orderDTO.getOrderId());
@@ -36,7 +33,6 @@ public class OrderDaoImp implements OrderDao{
         }
     }
 
-
     @Override
     public List<OrderDTO> getAllOrders(Connection connection) throws Exception {
         try {
@@ -54,9 +50,7 @@ public class OrderDaoImp implements OrderDao{
                 orderDTO.setCash(rst.getDouble(7));
                 orderDTO.setBalance(rst.getDouble(8));
                 orderDTOList.add(orderDTO);
-
             }
-            System.out.println("orderDTO list: " + orderDTOList);
             return orderDTOList;
         }catch (SQLException e){
             throw new SQLException(e.getMessage());

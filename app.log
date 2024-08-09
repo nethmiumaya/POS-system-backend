@@ -1,0 +1,9 @@
+20:00:40.067 [http-nio-8080-exec-3] INFO  l.i.v.controller.CustomerController - All Customers Retrieved Successfully
+20:00:45.394 [http-nio-8080-exec-2] INFO  l.i.v.controller.Customer - All Customers Retrieved Successfully
+20:00:56.840 [http-nio-8080-exec-7] INFO  l.i.v.controller.Customer - All Customers Retrieved Successfully
+20:00:59.175 [http-nio-8080-exec-8] INFO  l.i.v.controller.Customer - All Customers Retrieved Successfully
+20:00:59.192 [http-nio-8080-exec-1] INFO  l.i.v.controller.Customer - All Customers Retrieved Successfully
+20:01:06.418 [http-nio-8080-exec-10] INFO  l.i.v.controller.Customer - All Customers Retrieved Successfully
+20:01:06.427 [http-nio-8080-exec-5] INFO  l.i.v.controller.Customer - All Customers Retrieved Successfully
+20:01:06.441 [http-nio-8080-exec-6] INFO  l.i.v.controller.Customer - Customer Deleted Successfully
+20:01:06.442 [http-nio-8080-exec-3] INFO  l.i.v.controller.Customer - All Customers Retrieved Successfully

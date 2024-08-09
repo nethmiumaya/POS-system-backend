@@ -1,8 +1,5 @@
 package lk.ijse.posbackend.bo;
-
-import lk.ijse.posbackend.controller.Customer;
 import lk.ijse.posbackend.dto.CustomerDTO;
-
 import java.sql.Connection;
 import java.util.List;
 

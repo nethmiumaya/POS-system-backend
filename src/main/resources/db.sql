@@ -6,18 +6,16 @@ use POS_system;
             custName VARCHAR(50),
             custAddress VARCHAR(100),
             custSalary VARCHAR(30)
-
     );
 
-create table item(
+    create table item(
                      itemId VARCHAR(100) PRIMARY KEY ,
                      itemName VARCHAR(50),
                      itemQty VARCHAR(100),
                      itemPrice VARCHAR(30)
+    );
 
-);
-
-create table orders(
+    create table orders(
                          order_id VARCHAR(100) PRIMARY KEY,
                          date VARCHAR(20) NOT NULL ,
                          cust_id VARCHAR(100) NOT NULL ,
@@ -29,9 +27,9 @@ create table orders(
         FOREIGN KEY (cust_id) references customer(custId)
                    on update cascade
                    on delete cascade
-);
+    );
 
-create table order_detail(
+    create table order_detail(
                     order_id VARCHAR(100) ,
                     item_id VARCHAR(100),
                     qty INT NOT NULL,
@@ -41,6 +39,5 @@ create table order_detail(
         FOREIGN KEY (item_id) references item(itemId)
                         on update cascade
                         on delete cascade
-
-);
+    );
 

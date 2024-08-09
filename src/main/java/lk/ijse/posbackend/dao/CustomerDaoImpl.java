@@ -17,18 +17,15 @@ public final class CustomerDaoImpl implements CustomerDao {
 
     @Override
     public String saveCustomer(CustomerDTO customer, Connection connection) throws SQLException {
-
-        System.out.println("customer Dao  "+customer.getCustAddress());
         try {
             var ps = connection.prepareStatement(SAVE_CUSTOMER);
             ps.setString(1,customer.getCustId());
             ps.setString(2,customer.getCustName());
             ps.setString(3,customer.getCustAddress());
             ps.setString(4,customer.getCustSalary());
-
             if (ps.executeUpdate() !=0){
                 return "Customer added successfully";
-            }else {
+            } else {
                 return "Customer not added";
             }
         } catch (SQLException e) {
@@ -48,10 +45,9 @@ public final class CustomerDaoImpl implements CustomerDao {
                 customerDTO.setCustName(rst.getString("custName"));
                 customerDTO.setCustAddress(rst.getString("custAddress"));
                 customerDTO.setCustSalary(rst.getString("custSalary"));
-
             }
             return customerDTO;
-        }catch (Exception e){
+        } catch (Exception e){
             throw new SQLException(e.getMessage());
         }
     }
@@ -65,7 +61,7 @@ public final class CustomerDaoImpl implements CustomerDao {
            ps.setString(3,customerDTO.getCustSalary());
            ps.setString(4,customerDTO.getCustId());
            return ps.executeUpdate() !=0;
-       }catch (SQLException e){
+       } catch (SQLException e){
            throw new SQLException(e.getMessage());
        }
     }
@@ -92,7 +88,6 @@ public final class CustomerDaoImpl implements CustomerDao {
                 customerDTO.setCustSalary(rst.getString("custSalary"));
                 customerDTOList.add(customerDTO);
             }
-            System.out.println("customerDTOList: " + customerDTOList);
             return customerDTOList;
         }catch (SQLException e){
             throw new SQLException(e.getMessage());

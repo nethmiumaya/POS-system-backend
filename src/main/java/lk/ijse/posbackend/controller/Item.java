@@ -7,11 +7,8 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lk.ijse.posbackend.bo.CustomerBoImpl;
 import lk.ijse.posbackend.bo.ItemBaoImp;
-import lk.ijse.posbackend.dto.CustomerDTO;
 import lk.ijse.posbackend.dto.ItemDTO;
-import lk.ijse.posbackend.util.Util;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -55,8 +52,10 @@ public class Item extends HttpServlet {
 
             writer.write(itemBoImp.saveItem(itemDTO,connection));
             resp.setStatus(HttpServletResponse.SC_CREATED);
+            logger.info("item saved successfully");
         } catch (Exception e) {
             resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            logger.error("Error saving item",e);
             e.printStackTrace();
         }
     }
@@ -74,14 +73,14 @@ public class Item extends HttpServlet {
               jsonb.toJson(itemBoImp.getItem(id,connection),writer);
               resp.setStatus(HttpServletResponse.SC_OK);
               logger.info("Item Retrieve successfully");
-          }else {
+          } else {
               jsonb.toJson(itemBoImp.getAllItems(connection),writer);
               resp.setStatus(HttpServletResponse.SC_OK);
               logger.info("All Item Retrieve successfully");
           }
         } catch (Exception e) {
             resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            logger.error("Error occured while getting item");
+            logger.error("Error occured while retrieving item");
             e.printStackTrace();
         }
     }
@@ -90,17 +89,18 @@ public class Item extends HttpServlet {
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try(var writer = resp.getWriter()) {
             var itemBoImp = new ItemBaoImp();
-
             Jsonb jsonb = JsonbBuilder.create();
             ItemDTO itemDTO = jsonb.fromJson(req.getReader(), ItemDTO.class);
             if (itemBoImp.updateItem(itemDTO,connection)){
                 resp.setStatus(HttpServletResponse.SC_NO_CONTENT);
-            }
-            else {
+                logger.info("Item Updated Successfully");
+            } else {
                 writer.write("update fail");
                 resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                logger.info("Item Updated Failed");
             }
         } catch (Exception e) {
+            logger.error("Error occurred while updating item",e);
             e.printStackTrace();
         }
     }
@@ -112,10 +112,13 @@ public class Item extends HttpServlet {
             var itemBoImp = new ItemBaoImp();
             if (itemBoImp.deleteItem(itemId,connection)){
                 resp.setStatus((HttpServletResponse.SC_NO_CONTENT));
-            }else {
+                logger.info("Item Deleted Successfully");
+            } else {
                 writer.write("Delete failed");
+                logger.info("Item Deleted Failed");
             }
         } catch (Exception e) {
+            logger.error("Error occurred while deleting item",e);
             e.printStackTrace();
         }
     }

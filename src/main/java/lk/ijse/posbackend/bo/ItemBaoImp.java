@@ -2,7 +2,6 @@ package lk.ijse.posbackend.bo;
 
 import lk.ijse.posbackend.dao.ItemDaoImp;
 import lk.ijse.posbackend.dto.ItemDTO;
-
 import java.sql.Connection;
 import java.util.List;
 

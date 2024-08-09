@@ -64,16 +64,13 @@ public class Orders extends HttpServlet {
             var orderBOIMPL = new OrderBOIMPL();
             Jsonb jsonb = JsonbBuilder.create();
             resp.setContentType("application/json");
-
-                jsonb.toJson(orderBOIMPL.getAllOrders(connection),writer);
-                resp.setStatus(HttpServletResponse.SC_OK);
-                logger.info("All Orders Retrieve successfully");
-
+            jsonb.toJson(orderBOIMPL.getAllOrders(connection),writer);
+            resp.setStatus(HttpServletResponse.SC_OK);
+            logger.info("All Orders Retrieve successfully");
         } catch (Exception e) {
             resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             logger.error("Error occured while getting item");
             e.printStackTrace();
         }
     }
-
 }

@@ -1,7 +1,6 @@
 package lk.ijse.posbackend.dao;
 
 import lk.ijse.posbackend.dto.CustomerDTO;
-
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
